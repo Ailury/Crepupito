@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--basic information about this website-->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE-edge" />
+    <meta name="viewport" content="width-device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Tools to control watering "
+    />
+    <meta
+      name="authors"
+      content="Group Watering Plant Computer Embedded Laboratory 2022"
+    />
+    <meta name="keywords" content="water plant html css javascript" />
+    <!-- our topic -->
+    <title>Watering Plant</title>
+    <!--font-->
+    <link rel="stylesheet" href="resource/font.css" />
+    <!--custom css-->
+    <link rel="stylesheet" href="main.css" />
+  </head>
+
+  <body>
+    <!--header-->
+    <div class="header">
+      <h1>Watering Plant</h1>
+  </div>
+      <div class="info">     
+        <div class="plantname">
+          <!-- You can toggle select (disabled) -->
+          <input type="radio" name="option">
+          <i class="toggle icon icon-arrow-down"></i>
+          <i class="toggle icon icon-arrow-up"></i>
+          <span class="placeholder">Choose...</span>
+          <label class="option">
+              <input type="radio" name="option">
+              <span class="title animated fadeIn"><i class="icon icon-speedometer"></i>กล้วยไม้</span>
+          </label>
+          <label class="option">
+              <input type="radio" name="option">
+              <span class="title animated fadeIn"><i class="icon icon-fire"></i>กุหลาบ</span>
+          </label>
+          <label class="option">
+              <input type="radio" name="option" disabled>
+              <span class="title animated fadeIn"><i class="icon icon-handbag"></i>แก้ว</span>
+          </label>
+          <label class="option">
+              <input type="radio" name="option">
+              <span class="title animated fadeIn"><i class="icon icon-badge"></i>มะลิ</span>
+          </label>
+      </div>
+
+    
+        <div class="dropdown" id="dropdown">
+          <div class="select">
+            <span>Select Gender</span>
+            <i class="fa fa-chevron-left"></i>
+          </div>
+          <input type="hidden" name="gender">
+          <ul class="dropdown-menu" id="dropdown-menu">
+            <li id="male">Male</li>
+            <li id="female">Female</li>
+          </ul>
+        </div>
+    
+ 
+        <h1><span> &nbsp;&nbsp;&nbsp;I want </span><span>0</span><span>% humudity</span></h1>
+        <h1>&nbsp; Now I'm </h1>
+        <h1 class="infotext"><span>100</span><span>% Soil humudity</span></h1>
+        <div class="progressbg"><div class="progress"><p class="progresstext" id="progresssoil"></p></div></div>
+        <h1 class="infotext"><span>100</span><span>% Air humudity</span></h1>
+        <div class="progressbg"><div class="progress"><p class="progresstext" id="progressair"></p></div></div>
+        <h1 class="infotext">Temperature</h1>
+        <h1 class="infotext"><span>100</span><span>&nbsp; ํC</span></h1>
+        <div class="progressbg"><div class="progress"><p class="progresstext" id="progresstemp"></p></div></div>
+        
+        <div class="infotext">
+          <button class="wateringbtn" onclick="document.getElementById('login-ok').play()">Watering now!!!</button>
+          <!-- <p>Watering now</p> -->
+        </div>
+      </div>
+ 
+      <class class="plant-select">
+      </class>
+              
+      <!-- <div>
+        <div><h1> ความชื้นในดิน </h1></div>
+        <div><h1 id="soil-humid">test</h1></div>
+      </div> -->
+            
+      <!-- <div class="ความชื้น">
+          <div>
+            <h1>ความชื้นในอากาศ</h1>
+            <h1 id="air-humid">0%</h1>
+          </div>
+          <div>
+            <h1>Temperature</h1>
+            <h1 id ="temp">25 ํC</h1>
+          </div> -->
+<!--           
+          <div class="watering">
+            <button>Watering now(รูปรดน้ำ)</button>
+            <p>Watering now</p>
+          </div> -->
+        <!-- </div> -->
+      </div>
+    
+
+    <!--audio-->
+    <audio id="alert-sound">
+      <source src="resource/error-click.wav" type="audio/mpeg"/>
+      Your browser does not support the audio element.
+    </audio>
+    <audio id="login-ok">
+      <source src="resource/click.wav" type="audio/mpeg"/>
+      Your browser does not support the audio element
+    </audio>
+    <!-------------custom js------------------>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
