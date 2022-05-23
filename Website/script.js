@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-import { getDatabase,ref,onValue,set } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+import { getDatabase,ref,onValue,update } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,11 +17,7 @@ const firebaseConfig = {
   measurementId: "G-WSRXCCPWS6"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const app1 = initializeApp({
-//     databaseURL: "https://plantwatering-6d1f6-default-rtdb.firebaseio.com"
-//   });
 
 import {
 	getFirestore,
@@ -37,41 +33,10 @@ import {
 } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
 
 const db = getDatabase(app);
-// const db1 = getDatabase(app1);
-//--------------------------Import---------------------------------------
 
-// var express = require('express');
-// var app = express();
-// var port = 8000;
-// var admin = require("firebase-admin");
+//-------------------------------------RealtimeUpdate------------------------------------
 
-// var serviceAccount = require("C:/Users/Acer/Dropbox/Temp/Crepupito/Website/plantwatering-6d1f6-firebase-adminsdk-bbvyl-dd8429ea25.json");
-
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://plantwatering-6d1f6-default-rtdb.firebaseio.com"
-// });
-
-// app.use(express.json());
-// app.use(express.static('public'));
-
-// const database = admin.database();
-// const usersRef = database.ref('/users');
-
-
-// const starCountRef = ref(db, 'posts/' + postId + '/starCount');
-// onValue(starCountRef, (snapshot) => {
-//   const data = snapshot.val();
-//   updateStarCount(postElement, data);
-// });
-
-// set(ref(db), {
-//   username: 'name',
-//   email: 'emaill',
-//   profile_picture : 'imageUrl'
-// });
-
-//--------------------------Realtime------------------------------------
+var ReqHumid = 40;
 
 var alertsound = document.getElementById('alert-sound');
 var loginok = document.getElementById('login-ok');
@@ -79,10 +44,11 @@ var loginok = document.getElementById('login-ok');
 async function updateSoil(val){
     var prog = document.getElementById("progresssoil");
     prog.parentNode.style.width = `${val}%`;
-    if(val > 40){
+    if(val > ReqHumid){
         prog.parentNode.style.backgroundColor = "#55e9d5";
     }else {
         prog.parentNode.style.backgroundColor = "#e06031";
+        water();
     }
     prog.innerText = `${val}%`;
     document.getElementById("soilvalue").innerText = val;
@@ -95,7 +61,7 @@ async function updateAir(val){
     }else {
         prog.parentNode.style.width = `100%`;
     }
-    if(val > 40){
+    if(val > 50){
         prog.parentNode.style.backgroundColor = "#55e9d5";
     }else {
         prog.parentNode.style.backgroundColor = "#e06031";
@@ -120,29 +86,70 @@ async function updateTemp(val){
     document.getElementById("tempvalue").innerText = val;
 }
 
-// setTimeout(function(){
-//     updateSoil(70);
-//     updateAir(20);
-//     updateTemp(40);
-//     setTimeout(function(){
-//         updateSoil(0);
-//         updateAir(80);
-//         updateTemp(10);
-//     }, 500); 
-// }, 500); 
-// window.updateSoil = updateSoil;
+//-------------------------------------SendData------------------------------------
 
-var dataref = await ref(db);
-var data
-// while(true){
+async function setReqHumid(){
+    document.getElementById('login-ok').play();
+    var x = document.getElementById("inputhumid").value;
+    if (x < 0)x = 0;
+    else if (x > 100) x = 100;
+    else x = parseInt(x);
+    update(ref(db),{ReqHumid : x});
+    alert(`Minumun Humidity satisfication is now ${x}%`);
+}
+
+async function watering(){
+    document.getElementById('watering').play();
+    water();
+}
+async function water(){
+    update(ref(db),{ReqWater : 1});
+    setTimeout(function(){
+        update(ref(db),{ReqWater : 1});
+        setTimeout(function(){
+            update(ref(db),{ReqWater : 1});
+            setTimeout(function(){
+                update(ref(db),{ReqWater : 1});
+                setTimeout(function(){
+                    update(ref(db),{ReqWater : 1});
+                    setTimeout(function(){
+                        update(ref(db),{ReqWater : 1});
+                        setTimeout(function(){
+                            update(ref(db),{ReqWater : 1});
+                            setTimeout(function(){
+                                update(ref(db),{ReqWater : 1});
+                                setTimeout(function(){
+                                    update(ref(db),{ReqWater : 1});
+                                }, 1000); 
+                            }, 1000); 
+                        }, 1000); 
+                    }, 1000); 
+                }, 1000); 
+            }, 1000); 
+        }, 1000); 
+    }, 1000); 
+}
+
+//-------------------------------------StartWebsite------------------------------------
+
+async function startWebsite(){
+    var dataref = await ref(db);
+    var data
     await onValue(dataref, (snapshot) => {
         data = (snapshot.val());
         console.log(data);
         updateSoil(data.soilhumid);
         updateAir(data.airhumid);
         updateTemp(data.temp);
+        ReqHumid = data.ReqHumid;
     });
-// }
+}
+
+
+window.setReqHumid = setReqHumid;
+window.watering = watering;
+
+startWebsite();
 
 /*Dropdown Menu*/
 // $('.dropdown').click(function () {

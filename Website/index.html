@@ -68,18 +68,21 @@
         </div>
     
  
-        <h1><span> &nbsp;&nbsp;&nbsp;I want </span><span>0</span><span>% humudity</span></h1>
-        <h1>&nbsp; Now I'm </h1>
-        <h1 class="infotext"><span id="soilvalue">100</span><span>% Soil humudity</span></h1>
+        <div>
+          <h1><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I want </span><input id ="inputhumid" type="number" value="0"></input><span>% humudity &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><button id="setbtn" onclick="setReqHumid()"></button></h1>
+          
+        </div>
+        <h1>&nbsp;&nbsp;&nbsp;&nbsp;Now I'm </h1>
+        <h1 class="infotext"><span>Soil humudity :&nbsp;</span><span id="soilvalue">100</span><span>%</span></h1>
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progresssoil"></p></div></div>
-        <h1 class="infotext"><span id="airvalue">100</span><span>% Air humudity</span></h1>
+        <h1 class="infotext"><span>Air humudity :&nbsp;</span><span id="airvalue">100</span><span>%</span></h1>
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progressair"></p></div></div>
-        <h1 class="infotext">Temperature</h1>
-        <h1 class="infotext"><span id="tempvalue">100</span><span>&nbsp; ํC</span></h1>
+        <h1 class="infotext"><span>Temperature :&nbsp;</span><span id="tempvalue">50</span><span>&nbsp; ํC</span></h1>
+        <!-- <h1 class="infotext"><span id="tempvalue">50</span><span>&nbsp; ํC</span></h1> -->
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progresstemp"></p></div></div>
         
         <div class="infotext">
-          <button class="wateringbtn" onclick="document.getElementById('login-ok').play()">Watering now!!!</button>
+          <button class="wateringbtn" onclick="watering()">Watering now!!!</button>
           <!-- <p>Watering now</p> -->
         </div>
       </div>
@@ -117,6 +120,10 @@
     </audio>
     <audio id="login-ok">
       <source src="resource/click.wav" type="audio/mpeg"/>
+      Your browser does not support the audio element
+    </audio>
+    <audio id="watering">
+      <source src="resource/Watering.wav" type="audio/mpeg"/>
       Your browser does not support the audio element
     </audio>
     <!-------------custom js------------------>

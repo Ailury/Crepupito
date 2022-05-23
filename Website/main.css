@@ -60,7 +60,7 @@ h2{
   column-gap: 50px;  
   box-shadow: 4px 4px 4px -2px var(--cyan);
   padding: 15px 15px;
-  min-width: 500px; min-height: 500px;
+  min-width: 600px; min-height: 500px;
   /* max-width: 700px; */
   width: 40%;
   top: 45px;
@@ -71,6 +71,29 @@ h2{
   text-align: center;
 }
 
+/* --------------------------------------Button&Input------------------------------ */
+
+#inputhumid {
+  width: 75px;
+  height: 33px;
+  transform: translate(0%,-8%);
+  text-align: right;
+  font-size: 25px;
+  font-weight: 650;
+}
+
+#setbtn {
+  background-image: url(resource/setBtn.png); 
+  background-color: transparent;
+  align-self: center;
+  background-size: cover;
+  border: none;
+  cursor: pointer;  
+  min-width: 120px;
+  min-height: 50px;
+  transform: translate(-20%,27%);
+}
+
 .wateringbtn {
   background-image: url(resource/wateringbtn.png); 
   background-color: transparent;
@@ -78,7 +101,7 @@ h2{
   background-size: cover;
   border: none;
   cursor: pointer;  
-  min-width: 400px; min-height: 400px;
+  min-width: 400px; min-height: 380px;
   /* size: 20px; */
   font-size: 250%;
   font-weight: 650;
@@ -90,6 +113,8 @@ h2{
 .wateringbtn:hover {
   opacity: 0.7;
 }
+
+/* --------------------------------------Progress-Bar------------------------------ */
 
 .progress {
   height: 18px;
@@ -104,6 +129,8 @@ h2{
 .progressbg {
   margin-left: 12.5%;
   text-align: center;
+  margin-top: 10px;
+  margin-bottom: 20px;
   width: 75%;   
   border-radius: 20px;
   height: 35px;
@@ -116,40 +143,8 @@ h2{
   padding-top: 4px;
   text-align: center;
 }
-/* 
-.progress {
-  margin-left: 15%;
-  text-align: center;
-  width: 70%; 
-  border-radius: 20px;
-  height: 40px;
-  background-image: linear-gradient(
-        45deg, rgb(252,163,17) 25%, 
-        transparent 25%, transparent 50%, 
-        rgb(252,163,17) 50%, rgb(252,163,17) 75%,
-        transparent 75%, transparent); 
-  background-image: 
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));  
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
-}
 
-progress::-webkit-progress-bar {
-    border: 0;
-    height: 40px;
-    border-radius: 20px;
-}
-progress::-webkit-progress-value {
-    border: 0;
-    height: 40px;
-    border-radius: 20px;
-}
-progress::-moz-progress-bar {
-    border: 0;
-    height: 40px;
-    border-radius: 20px;
-} */
-
-
+/* --------------------------------------Drop-Down------------------------------ */
 /*Styling Selectbox*/
 .dropdown {
   width: 300px;
@@ -220,373 +215,4 @@ progress::-moz-progress-bar {
 }
 .dropdown .dropdown-menu li:active {
     background-color: #e2e2e2
-}
-
-
-/*-------------------------------start of my set part----------------------------------*/
-/*all vocab set*/
-
-/*delete button in every block*/
-.delSet{
-  background-image: url("/resource/delete.png");
-  background-size: cover;
-  border: none;
-  cursor: pointer;
-	width: 25px;
-	height: 25px;
-	background-color: transparent;
-}
-
-.delSet:hover{
-  opacity: 0.7;
-}
-
-/*learning button in every block*/
-.learningSet{
-  box-shadow: 3px 3px 3px -1px var(--cyan);
-  background-color: var(--blue);
-  color: var(--white);
-  border: none;
-  cursor: pointer;
-  margin: auto; 
-  padding: 7px;
-  border-radius: 10%;
-  position: relative;
-  top: 100px;
-  right: -20px;
-}
-
-.learningSet:hover{
-  box-shadow: 3px 3px 3px -1px var(--blue);
-  background-color: var(--cyan);
-  color: var(--darkblue);
-  
-}
-
-/*practice button in every block*/
-.practiceSet{
-  box-shadow: 3px 3px 3px -1px var(--yellow);
-  background-color: var(--orange);
-  color: var(--white);
-  border: none;
-  cursor: pointer;
-  margin: auto;
-  padding: 7px;
-  border-radius: 10%;
-  position: relative;
-  top: 100px;
-  left: 30px;
-}
-
-.practiceSet:hover{
-  box-shadow: 3px 3px 3px -1px var(--orange);
-  background-color: var(--yellow);
-  color: var(--black);
-}
-
-.show-score{
-  text-align: center;
-  font-size: 600%;
-  position: relative;
-  top: 30%;
-}
-
-
-/*new block button*/
-.btn-add-new-block{
-  background-image: url("/resource/plus.png");
-  background-size: cover;
-  border: none;
-  cursor: pointer;
-	width: 30px;
-	height: 30px;
-	background-color: transparent;
-  position: relative;
-  top: 50px;  
-  left: 90px;
-  margin: auto;
-}
-
-.btn-add-new-block:hover{
-  opacity: 0.7;
-}
-
-/*-------------------------------end of my set part----------------------------------*/
-
-/*-------------------------------start of learning part----------------------------------*/
-/*Learning part*/
-.learning{
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: 2rem;
-  padding: 0.5rem;
-  
-}
-
-.board{
-  background-color: var(--white);
-  box-shadow: 4px 4px 4px -2px var(--cyan);
-  padding: 25px 25px;
-  min-width: 300px;
-  max-width: 1000px; 
-  height: 500px;
-  margin: auto;
-  position: relative;
-}
-
-.name{
-  font-size: 20px;
-  font-weight: 600;
-  position: absolute;
-  transform: translate(0, -30%);
-  padding: 10px;
-}
-
-.number{
-  font-size: 20px;
-  font-weight: 600;
-  text-align: right;
-  position: absolute;
-  right: 4%;
-  transform: translate(0%, -20%); 
-}
-
-.learning .vocab{
-  font-size: 300%;
-  font-weight: 800;
-  text-align: center;
-  position: relative;
-  top: 30%;
-}
-
-.learning .mean{
-  font-size: 200%;
-  font-weight: 300;
-  text-align: center;
-  position: relative;
-  top: 30%;
-
-}
-
-.previous{
-  background-image: url("https://media.discordapp.net/attachments/963438694545621032/965610381139664966/arrow-left.png");
-  background-size: cover;
-  border: none;
-  cursor: pointer;
-	width: 40px;
-	height: 40px;
-	background-color: transparent;
-  margin: auto;
-  position: absolute;
-  top: 80%;
-  left: 40%;
-}
-
-.next{
-  background-image: url("https://media.discordapp.net/attachments/963438694545621032/965610394393657444/arrow-right.png");
-  background-size: cover;
-  border: none;
-  cursor: pointer;
-	width: 40px;
-	height: 40px;
-	background-color: transparent;
-  margin: auto;
-  position: absolute;
-  top: 80%;
-  left: 57%;
-}
-/*-------------------------------ending of learning part----------------------------------*/
-
-/*-------------------------------start of practice part----------------------------------*/
-/*Practice part*/
-.practicing{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  margin-left: 2rem;
-  padding: 0.5rem;
-}
-
-.practicing .question{
-  font-size: 50px;
-  font-weight: 800;
-  text-align: center;
-  position: relative;
-  top: 30%;
-
-}
-
-.ans{
-  width: 75%;
-  height: 40px;
-  font-size: 18px;
-  text-align: center;
-  position: absolute;
-  bottom: 40%;
-  left: 12.5%;
-}
-
-.btn-enter{
-  text-transform: uppercase;
-  font-size: 15px;
-  font-weight: 500;
-  box-shadow: 3px 3px 3px -1px var(--cyan);
-  background-color: var(--blue);
-  color: var(--white);
-  cursor: pointer;
-  margin: auto;
-  border: none;
-  padding: 10px;
-  width: 30%;
-  height: 10%;
-  border-radius: 10%;
-  position: absolute;
-  bottom: 15%;
-  left: 34.75%;
-
-}
-
-.correct-img{
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  top: 10%;
-  right: 13%;
-}
-
-.score-correct{
-  position: absolute;
-  top: 11%;
-  right: 5%;
-}
-
-.incorrect-img{
-  max-width: 30px; 
-  max-height: 30px;
-  position: absolute;
-  top: 18%;
-  right: 13%;
-}
-
-.score-incorrect{
-  position: absolute;
-  top: 18%;
-  right: 5%;
-}
-/*-------------------------------ending of practice part----------------------------------*/
-
-/*Vocab part*/
-.vocabulary{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  margin-left: 2rem;
-  padding: 0.5rem;
-}
-
-#content {
-  padding: 0;
-  width: 95%;
-  margin: auto;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 2px 2px 2px 0 var(--cyan);
-  border-collapse: collapse;
-  overflow: hidden;
-}
-
-#content > thead {
-  background: var(--darkblue);
-  color: white;
-}
-
-#content > thead > tr > th {
-  font-weight: lighter;
-  text-align: left;
-}
-
-#content td,
-#content th {
-  padding: 5px 10px;
-  font-weight: lighter;
-}
-
-#word-to-add,
-#meaning-to-add {
-  padding: 5px 10px;
-  border-radius: 8px;
-  border: 1px solid #aaa;
-}
-
-.delete-row,
-#add-newrow {
-  border-radius: 8px;
-  padding: 5px 10px;
-  border: 1px solid #aaa;
-  background: white;
-  width: 60px;
-  cursor: pointer;
-}
-
-.delete-row:hover,
-#add-newrow:hover {
-  background: rgb(255, 200, 105);
-  color: white;
-}
-
-/*login part*/
-.login-container{
-  background-color: var(--white);
-  box-shadow: 4px 4px 4px -2px var(--cyan);
-  padding: 25px 25px;
-  width: 60%;
-  height: 60%;
-  max-width: 400px;
-  max-height: 400px;
-  min-width: 200px;
-  min-height: 200px;
-  margin: auto;
-  border-radius: 5%;
-}
-
-.username{
-  width: 60%;
-  text-align: center;
-  position: relative;
-  left: 20%;
-}
-
-.password{
-  width: 60%;
-  text-align: center;
-  position: relative;
-  top: 50%;
-  left: 20%;
-  transform: translate(0%, 100%);
-}
-
-.inform{
-  font-size: 100%;
-  position: relative;
-  transform: translate(0%, 175%);
-  text-align: center;
-  color: red;
-}
-
-.btn-login{
-  font-size: 15px;
-  font-weight: 500;
-  text-align: center;
-  box-shadow: 3px 3px 3px -1px var(--cyan);
-  background-color: var(--blue);
-  color: var(--white);
-  border: none;
-  cursor: pointer;
-  margin: auto;
-  width: 30%;
-  height: 10%;
-  min-width: 70px;
-  min-height: 50px;
-  border-radius: 10%;
-  position: relative;
-  left: 35%;
-  transform: translate(0%, 130%);
 }
