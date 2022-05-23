@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="resource/font.css" />
     <!--custom css-->
     <link rel="stylesheet" href="main.css" />
+    
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   </head>
 
   <body>
@@ -68,12 +70,12 @@
  
         <h1><span> &nbsp;&nbsp;&nbsp;I want </span><span>0</span><span>% humudity</span></h1>
         <h1>&nbsp; Now I'm </h1>
-        <h1 class="infotext"><span>100</span><span>% Soil humudity</span></h1>
+        <h1 class="infotext"><span id="soilvalue">100</span><span>% Soil humudity</span></h1>
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progresssoil"></p></div></div>
-        <h1 class="infotext"><span>100</span><span>% Air humudity</span></h1>
+        <h1 class="infotext"><span id="airvalue">100</span><span>% Air humudity</span></h1>
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progressair"></p></div></div>
         <h1 class="infotext">Temperature</h1>
-        <h1 class="infotext"><span>100</span><span>&nbsp; ํC</span></h1>
+        <h1 class="infotext"><span id="tempvalue">100</span><span>&nbsp; ํC</span></h1>
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progresstemp"></p></div></div>
         
         <div class="infotext">
