@@ -32,7 +32,7 @@
       <div class="info">     
         <div class="plantname">
           <!-- You can toggle select (disabled) -->
-          <input type="radio" name="option">
+          <!-- <input type="radio" name="option">
           <i class="toggle icon icon-arrow-down"></i>
           <i class="toggle icon icon-arrow-up"></i>
           <span class="placeholder">Choose...</span>
@@ -51,11 +51,11 @@
           <label class="option">
               <input type="radio" name="option">
               <span class="title animated fadeIn"><i class="icon icon-badge"></i>มะลิ</span>
-          </label>
+          </label> -->
       </div>
 
     
-        <div class="dropdown" id="dropdown">
+        <!-- <div class="dropdown" id="dropdown">
           <div class="select">
             <span>Select Gender</span>
             <i class="fa fa-chevron-left"></i>
@@ -65,13 +65,22 @@
             <li id="male">Male</li>
             <li id="female">Female</li>
           </ul>
-        </div>
+        </div> -->
     
  
-        <div>
-          <h1><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;I want </span><input id ="inputhumid" type="number" value="0"></input><span>% humudity &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><button id="setbtn" onclick="setReqHumid()"></button></h1>
-          
+        <div class = "set-soil-humid">
+          <div class = "column left">
+            <h1>&nbsp;&nbsp;&nbsp;
+            <span>I want</span>
+            <input id ="inputhumid" type="number" value="0"></input>
+            <span>% humudity</span>
+            </h1>
+          </div>
+          <div  class = "column right">
+            <button id="setbtn" onclick="setReqHumid()"></button>
+          </div>
         </div>
+
         <h1>&nbsp;&nbsp;&nbsp;&nbsp;Now I'm </h1>
         <h1 class="infotext"><span>Soil humudity :&nbsp;</span><span id="soilvalue">100</span><span>%</span></h1>
         <div class="progressbg"><div class="progress"><p class="progresstext" id="progresssoil"></p></div></div>

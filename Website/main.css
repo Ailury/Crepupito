@@ -12,7 +12,7 @@
 }
 
 *{
-    font-family: 'Mitr',sans-serif;
+    font-family: 'Mitr','Open sans';
     padding: 0px;
     margin: 0px;
 }
@@ -33,6 +33,7 @@ html{
     font-size: 12px;
     text-align: left;
     font-weight: 800;
+    min-width: 800px;
   }
 
 h2{
@@ -47,10 +48,10 @@ h2{
   background-color: var(--white);
   padding: 10px 16px;
   size : 100%;
-  margin-top: 1rem;
-  margin-left: 5rem;
-  margin-right: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 10px;
+  margin-left: 50px;
+  margin-right: 50px;
+  margin-bottom: 100px;
   padding: 1 rem;  
   /* display: flex; */
   position : relative;
@@ -76,7 +77,7 @@ h2{
 #inputhumid {
   width: 75px;
   height: 33px;
-  transform: translate(0%,-8%);
+  transform: translate(0%,-5%);
   text-align: right;
   font-size: 25px;
   font-weight: 650;
@@ -85,13 +86,36 @@ h2{
 #setbtn {
   background-image: url(resource/setBtn.png); 
   background-color: transparent;
-  align-self: center;
+  align-self: right;
   background-size: cover;
   border: none;
   cursor: pointer;  
   min-width: 120px;
   min-height: 50px;
-  transform: translate(-20%,27%);
+}
+/*clear floats after column*/
+.set-soil-humid:after{
+  /* border: 5px solid #FFFF00; */
+    content: "";
+    display: table;
+    clear: both;
+}
+.column {
+  float: left;
+  /* border: 5px solid #FFFF00; */
+
+}
+
+
+.left {
+  width: 75%;
+  /* border: 5px solid #FFFF00; */
+
+}
+
+.right {
+  width: 20%;
+  /* border: 5px solid #FFFF00; */
 }
 
 .wateringbtn {
