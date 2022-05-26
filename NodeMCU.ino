@@ -7,6 +7,10 @@
 #define FIREBASE_HOST "plantwatering-6d1f6-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "e64eB8GlFTE5T9z2SQZswQ0jW9FYJ7nKKW2mnCe9"
 
+float airhumid;
+float temp;
+float soilhumid;
+
 /*
 void i2ctransmit(int address,String massage) {
   // msg len
@@ -19,6 +23,24 @@ void i2ctransmit(int address,String massage) {
   Wire.endTransmission(address);
 }
 */
+
+void readData() {
+  int i=0; char tmp[4];
+  Wire.requestFrom(8,12);
+  while (Wire.available()) {
+    tmp[i%4]= Wire.read();
+    if (i==3) {
+      temp = atof(tmp);
+    }
+    else if (i==7) {
+      airhumid = atof(tmp);
+    }
+    else if (i==11) {
+      soilhumid = atof(tmp);
+    }
+    i++;
+  }
+}
 
 void setup() {
   Serial.begin(115200);
@@ -42,22 +64,26 @@ char buffer[100];
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED){
-    Wire.requestFrom(8,11);
-    int i = 0;
-    String s="";
-    while (Wire.available()) {
-      char c = Wire.read();
-      s+=c;
-      buffer[i]=c;
-      i++;
-    }
-    Firebase.setString("data",s);
+    readData();
+    Serial.println("read data completed");
+    Firebase.setFloat("airhumid",airhumid);
     if (Firebase.failed()) {
-      Serial.print("setting /data failed:");
+      Serial.print("setting /airhumid failed:");
       Serial.println(Firebase.error());  
       return;
     }
-    Serial.println(s);
+    Firebase.setFloat("soilhumid",soilhumid);
+    if (Firebase.failed()) {
+      Serial.print("setting /soilhumid failed:");
+      Serial.println(Firebase.error());  
+      return;
+    }
+    Firebase.setFloat("temp",temp);
+    if (Firebase.failed()) {
+      Serial.print("setting /temp failed:");
+      Serial.println(Firebase.error());  
+      return;
+    }
     delay(10000);
   }
 }

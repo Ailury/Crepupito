@@ -216,7 +216,7 @@ int main(void)
 	  }
 
 	  // I2C Transmit
-	  sprintf(buffer,"%.1f%.1f%.1f",ADCpercent,temp,humid);
+	  sprintf(buffer,"%04.1f%04.1f%04.1f",temp,humid,ADCpercent); // force xx.x , but still have a problem with 100.0 -> cap to 99.9?
 	  HAL_I2C_Slave_Transmit(&hi2c1, &buffer, strlen(buffer), HAL_MAX_DELAY);
 
 	  // I2C Receive
