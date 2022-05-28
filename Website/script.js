@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-import { getDatabase,ref,onValue,update } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+import { getDatabase,ref,child,onValue,update,get } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -134,14 +134,26 @@ async function water(){
 
 async function startWebsite(){
     var dataref = await ref(db);
-    var data
+    var data;
+    get(dataref).then((snapshot) => {
+        if (snapshot.exists()) {
+        //   console.log(snapshot.val());
+            data = snapshot.val();
+            // console.log(data);
+            ReqHumid = data.ReqHumid;
+            document.getElementById("inputhumid").value = ReqHumid;
+        } else {
+          console.log("No data available");
+        }
+      }).catch((error) => {
+        console.error(error);
+      });
     await onValue(dataref, (snapshot) => {
         data = (snapshot.val());
         console.log(data);
         updateSoil(data.soilhumid);
         updateAir(data.airhumid);
         updateTemp(data.temp);
-        ReqHumid = data.ReqHumid;
     });
 }
 
