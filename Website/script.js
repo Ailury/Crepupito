@@ -37,17 +37,20 @@ const db = getDatabase(app);
 //-------------------------------------RealtimeUpdate------------------------------------
 
 var ReqHumid = 40;
-
+var waterok = 0;
+var orange = "#f79767";
+var blue = "#90cec5";
+var red;
 var alertsound = document.getElementById('alert-sound');
 var loginok = document.getElementById('login-ok');
 
 async function updateSoil(val){
     var prog = document.getElementById("progresssoil");
     prog.parentNode.style.width = `${val}%`;
-    if(val > ReqHumid){
-        prog.parentNode.style.backgroundColor = "#55e9d5";
+    if(val >= ReqHumid){
+        prog.parentNode.style.backgroundColor = blue;
     }else {
-        prog.parentNode.style.backgroundColor = "#e06031";
+        prog.parentNode.style.backgroundColor = orange;
         water();
     }
     prog.innerText = `${val}%`;
@@ -62,9 +65,9 @@ async function updateAir(val){
         prog.parentNode.style.width = `100%`;
     }
     if(val > 50){
-        prog.parentNode.style.backgroundColor = "#55e9d5";
+        prog.parentNode.style.backgroundColor = blue;
     }else {
-        prog.parentNode.style.backgroundColor = "#e06031";
+        prog.parentNode.style.backgroundColor = orange;
     }
     prog.innerText = `${val}%`;
     document.getElementById("airvalue").innerText = val;
@@ -78,9 +81,9 @@ async function updateTemp(val){
         prog.parentNode.style.width = `100%`;
     }
     if(val > 25){
-        prog.parentNode.style.backgroundColor = "#e06031";
+        prog.parentNode.style.backgroundColor = orange;
     }else {
-        prog.parentNode.style.backgroundColor = "#55e9d5"; 
+        prog.parentNode.style.backgroundColor = blue; 
     }
     prog.innerText = `${val} ํC`;
     document.getElementById("tempvalue").innerText = val;
@@ -94,7 +97,23 @@ async function setReqHumid(){
     if (x < 0)x = 0;
     else if (x > 100) x = 100;
     else x = parseInt(x);
+    ReqHumid = x;
     update(ref(db),{ReqHumid : x});
+    // var dataref = await ref(db);
+    // var data;
+    // get(dataref).then((snapshot) => {
+    //     if (snapshot.exists()) {
+    //     //   console.log(snapshot.val());
+    //         data = snapshot.val();
+    //         if(data.ReqHumid > data.soilhumid){
+    //             water();
+    //         }
+    //     } else {
+    //       console.log("No data available");
+    //     }
+    // }).catch((error) => {
+    //     console.error
+    // });
     alert(`Minumun Humidity satisfication is now ${x}%`);
 }
 
@@ -103,30 +122,72 @@ async function watering(){
     water();
 }
 async function water(){
+    if(waterok)return;
+    waterok = 1;
     update(ref(db),{ReqWater : 1});
+    // setTimeout(function(){
+    //     update(ref(db),{ReqWater : 1});
+    //     setTimeout(function(){
+    //         update(ref(db),{ReqWater : 1});
+    //         setTimeout(function(){
+    //             update(ref(db),{ReqWater : 1});
+    //             setTimeout(function(){
+    //                 update(ref(db),{ReqWater : 1});
+    //                 setTimeout(function(){
+    //                     update(ref(db),{ReqWater : 1});
+    //                     setTimeout(function(){
+    //                         update(ref(db),{ReqWater : 1});
+    //                         setTimeout(function(){
+    //                             update(ref(db),{ReqWater : 1});
+    //                             setTimeout(function(){
+    //                                 update(ref(db),{ReqWater : 1});
+    //                                 setTimeout(function(){
+    //                                     update(ref(db),{ReqWater : 0});
+    //                                     waterok = 0;
+    //                                     // setTimeout(function(){
+    //                                     //     update(ref(db),{ReqWater : 1});
+    //                                     // }, 1000); 
+    //                                 }, 1000); 
+    //                             }, 1000); 
+    //                         }, 1000); 
+    //                     }, 1000); 
+    //                 }, 1000); 
+    //             }, 1000); 
+    //         }, 1000); 
+    //     }, 1000); 
+    // }, 1000); 
+    
     setTimeout(function(){
-        update(ref(db),{ReqWater : 1});
-        setTimeout(function(){
-            update(ref(db),{ReqWater : 1});
-            setTimeout(function(){
-                update(ref(db),{ReqWater : 1});
-                setTimeout(function(){
-                    update(ref(db),{ReqWater : 1});
-                    setTimeout(function(){
-                        update(ref(db),{ReqWater : 1});
-                        setTimeout(function(){
-                            update(ref(db),{ReqWater : 1});
-                            setTimeout(function(){
-                                update(ref(db),{ReqWater : 1});
-                                setTimeout(function(){
-                                    update(ref(db),{ReqWater : 1});
-                                }, 1000); 
-                            }, 1000); 
-                        }, 1000); 
-                    }, 1000); 
-                }, 1000); 
-            }, 1000); 
-        }, 1000); 
+        update(ref(db),{ReqWater : 0});
+        waterok = 0;
+        // setTimeout(function(){
+        //     update(ref(db),{ReqWater : 1});
+        // }, 1000); 
+    }, 5000); 
+}
+
+async function updateval(){
+    var dataref = await ref(db);
+    var data;
+    get(dataref).then((snapshot) => {
+        if (snapshot.exists()) {
+        //   console.log(snapshot.val());
+            data = snapshot.val();
+            console.log(data);
+            updateSoil(data.soilhumid);
+            updateAir(data.airhumid);
+            updateTemp(data.temp);
+            if(data.ReqHumid > data.soilhumid){
+                water();
+            }
+        } else {
+          console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+    setTimeout(function(){
+        updateval();
     }, 1000); 
 }
 
@@ -148,13 +209,33 @@ async function startWebsite(){
       }).catch((error) => {
         console.error(error);
       });
-    await onValue(dataref, (snapshot) => {
-        data = (snapshot.val());
-        console.log(data);
-        updateSoil(data.soilhumid);
-        updateAir(data.airhumid);
-        updateTemp(data.temp);
-    });
+    updateval();
+    // await onValue(dataref, (snapshot) => {
+    //     data = (snapshot.val());
+    //     console.log(data);
+    //     updateSoil(data.soilhumid);
+    //     updateAir(data.airhumid);
+    //     updateTemp(data.temp);
+    // });
+
+    // while(true){
+    // get(dataref).then((snapshot) => {
+    //     if (snapshot.exists()) {
+    //     //   console.log(snapshot.val());
+    //         data = snapshot.val();
+    //         console.log(data);
+    //         updateSoil(data.soilhumid);
+    //         updateAir(data.airhumid);
+    //         updateTemp(data.temp);
+    //     } else {
+    //       console.log("No data available");
+    //     }
+    //     }).catch((error) => {
+    //         console.error(error);
+    //     });
+    //     // await timer(1000);
+    //     Thread.sleep(1000);
+    // }
 }
 
 
