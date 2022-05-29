@@ -186,7 +186,9 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HAL_TIM_Base_Start(&htim1);
-  char buffer[100]; char p='%';
+  char buffer[100];
+  char tmp[4]; //tmp[4]='\0';
+  char p='%';
   char logger[100];
   uint64_t ADCValue;
   float ADCpercent;
@@ -220,10 +222,12 @@ int main(void)
 	  HAL_I2C_Slave_Transmit(&hi2c1, &buffer, strlen(buffer), HAL_MAX_DELAY);
 
 	  // I2C Receive
+	  HAL_I2C_Slave_Receive(&hi2c1, &tmp, strlen(tmp), HAL_MAX_DELAY);
+	  reqhumid = atoi(tmp);
 
 
 	  // CONSOLE LOGS
-	  sprintf(logger, "soilhumid : %.1f , airtemp : %.1f C , airhumid : %.1f%c \r\n",ADCpercent,temp,humid,p);
+	  sprintf(logger, "soilhumid : %.1f , airtemp : %.1f C , airhumid : %.1f%c , reqhumid : %.1f \r\n",ADCpercent,temp,humid,p,reqhumid);
 	  HAL_UART_Transmit(&huart2, &logger, strlen(logger), HAL_MAX_DELAY);
 
 	  HAL_Delay(10000);
