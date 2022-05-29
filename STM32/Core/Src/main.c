@@ -74,7 +74,7 @@ float humid;
 uint8_t pres = 0;
 #define DHT22_PORT GPIOA
 #define DHT22_PIN GPIO_PIN_4
-float reqhumid;
+int reqwater;
 
 void delay(uint16_t time){
 	__HAL_TIM_SET_COUNTER(&htim1,0);
@@ -189,8 +189,9 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HAL_TIM_Base_Start(&htim1);
+  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
   char buffer[100];
-  char tmp[4]; //tmp[4]='\0';
+  char tmp[3];
   char p='%';
   char logger[100];
   uint64_t ADCValue;
@@ -211,6 +212,7 @@ int main(void)
 	  h = (h_byte1<<8)|h_byte2;
 	  temp = (float) (t/10.0);
 	  humid = (float)(h/10.0);
+	  humid = (humid>99.9) ? 99.9 : humid;
 
 	  //SOIL MOISTURE
 	  HAL_ADC_Start(&hadc1);
@@ -218,25 +220,41 @@ int main(void)
 		  ADCValue = HAL_ADC_GetValue(&hadc1);
 		  ADCpercent = 0.02528;
 		  ADCpercent = -(float)(ADCValue)*ADCpercent+112.4;
-		  ADCpercent = (ADCpercent>100) ? 100.0 : ADCpercent;
+		  ADCpercent = (ADCpercent>99.9) ? 99.9 : ADCpercent;
 	  }
 
 	  // I2C Transmit
-	  sprintf(buffer,"%04.1f%04.1f%04.1f",temp,humid,ADCpercent); // force xx.x , but still have a problem with 100.0 -> cap to 99.9?
+	  sprintf(buffer,"%04.1f%04.1f%04.1f",temp,humid,ADCpercent); // force xx.x
 	  HAL_I2C_Slave_Transmit(&hi2c1, &buffer, strlen(buffer), HAL_MAX_DELAY);
 
 	  // I2C Receive
 	  HAL_I2C_Slave_Receive(&hi2c1, &tmp, strlen(tmp), HAL_MAX_DELAY);
-	  reqhumid = atoi(tmp);
+	  reqwater = atoi(tmp);
 
-	  //water pump
-	  /* state0 no water, state1 start, state2 water, state3 stop */
+	  // Water Pump
+	  /* state 0 = off
+	   * state 1 = on */
+	  if (state==0 && reqwater==1) {
+		  state=1;
+		  for (int i=0;i<450;i++) {
+			  TIM2->CCR1 = (i>100) ? 100 : i;
+			  HAL_Delay(10);
+		  }
+	  }
+	  else if (state==1) {
+		  state=0;
+		  for (int i=449;i>=0;i--) {
+			  TIM2->CCR1 = (i>100) ? 100 : i;
+			  HAL_Delay(10);
+		  }
+	  }
+	  else {
+		  HAL_Delay(5000);
+	  }
 
 	  // CONSOLE LOGS
-	  sprintf(logger, "soilhumid : %.1f , airtemp : %.1f C , airhumid : %.1f%c , reqhumid : %.1f \r\n",ADCpercent,temp,humid,p,reqhumid);
+	  sprintf(logger, "soilhumid : %.1f , airtemp : %.1f C , airhumid : %.1f%c , reqwater : %d \r\n",ADCpercent,temp,humid,p,reqwater);
 	  HAL_UART_Transmit(&huart2, &logger, strlen(logger), HAL_MAX_DELAY);
-
-	  HAL_Delay(10000);
 
     /* USER CODE END WHILE */
 

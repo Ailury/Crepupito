@@ -10,23 +10,20 @@
 float airhumid;
 float temp;
 float soilhumid;
+float reqwater;
 
-/*
-void i2ctransmit(int address,String massage) {
-  // msg len
+void transmitData(int address) {
+  char tmp[3];
   Wire.beginTransmission(address);
-  Wire.write(strlen(massage));
+  sprintf(tmp,"%03.1f",reqwater);
+  Wire.write(tmp);
   Wire.endTransmission(address);
-  // msg
-  Wire.beginTransmission(address);
-  Wire.write(strlen(massage));
-  Wire.endTransmission(address);
+  Serial.println("Transmit completed");
 }
-*/
 
-void readData() {
+void readData(int address) {
   int i=0; char tmp[4];
-  Wire.requestFrom(8,12);
+  Wire.requestFrom(address,12);
   while (Wire.available()) {
     tmp[i%4]= Wire.read();
     if (i==3) {
@@ -64,7 +61,8 @@ char buffer[100];
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED){
-    readData();
+    readData(8);
+    // set data
     Serial.println("read data completed");
     Firebase.setFloat("airhumid",airhumid);
     if (Firebase.failed()) {
@@ -84,6 +82,10 @@ void loop() {
       Serial.println(Firebase.error());  
       return;
     }
-    delay(10000);
+    // read data
+    reqwater = Firebase.getFloat("/ReqWater");
+    transmitData(8);
+    
+    delay(5000);
   }
 }
