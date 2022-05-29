@@ -99,8 +99,8 @@ h2{
   background-size: cover;
   border: none;
   cursor: pointer;  
-  min-width: 120px;
-  min-height: 50px;
+  min-width: 147px;
+  min-height: 60px;
 }
 /*clear floats after column*/
 .set-soil-humid:after{
