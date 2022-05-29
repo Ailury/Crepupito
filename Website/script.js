@@ -37,7 +37,9 @@ const db = getDatabase(app);
 //-------------------------------------RealtimeUpdate------------------------------------
 
 var ReqHumid = 40;
-
+var orange = "#f79767";
+var blue = "#90cec5";
+var red;
 var alertsound = document.getElementById('alert-sound');
 var loginok = document.getElementById('login-ok');
 
@@ -45,9 +47,9 @@ async function updateSoil(val){
     var prog = document.getElementById("progresssoil");
     prog.parentNode.style.width = `${val}%`;
     if(val > ReqHumid){
-        prog.parentNode.style.backgroundColor = "#55e9d5";
+        prog.parentNode.style.backgroundColor = blue;
     }else {
-        prog.parentNode.style.backgroundColor = "#e06031";
+        prog.parentNode.style.backgroundColor = orange;
         water();
     }
     prog.innerText = `${val}%`;
@@ -62,9 +64,9 @@ async function updateAir(val){
         prog.parentNode.style.width = `100%`;
     }
     if(val > 50){
-        prog.parentNode.style.backgroundColor = "#55e9d5";
+        prog.parentNode.style.backgroundColor = blue;
     }else {
-        prog.parentNode.style.backgroundColor = "#e06031";
+        prog.parentNode.style.backgroundColor = orange;
     }
     prog.innerText = `${val}%`;
     document.getElementById("airvalue").innerText = val;
@@ -78,9 +80,9 @@ async function updateTemp(val){
         prog.parentNode.style.width = `100%`;
     }
     if(val > 25){
-        prog.parentNode.style.backgroundColor = "#e06031";
+        prog.parentNode.style.backgroundColor = orange;
     }else {
-        prog.parentNode.style.backgroundColor = "#55e9d5"; 
+        prog.parentNode.style.backgroundColor = blue; 
     }
     prog.innerText = `${val} ํC`;
     document.getElementById("tempvalue").innerText = val;
@@ -120,6 +122,12 @@ async function water(){
                                 update(ref(db),{ReqWater : 1});
                                 setTimeout(function(){
                                     update(ref(db),{ReqWater : 1});
+                                    setTimeout(function(){
+                                        update(ref(db),{ReqWater : 0});
+                                        // setTimeout(function(){
+                                        //     update(ref(db),{ReqWater : 1});
+                                        // }, 1000); 
+                                    }, 1000); 
                                 }, 1000); 
                             }, 1000); 
                         }, 1000); 
