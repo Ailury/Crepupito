@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-app.js";
-import { getDatabase,ref,child,onValue,update,get } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
+import { getDatabase,ref,onValue,update,get } from "https://www.gstatic.com/firebasejs/9.6.11/firebase-database.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -18,20 +18,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-
-import {
-	getFirestore,
-	doc,
-	getDoc,
-	getDocs,
-	collection,
-	query,
-	setDoc,
-	deleteDoc,
-    addDoc,
-    updateDoc,
-} from "https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore.js";
-
 const db = getDatabase(app);
 
 //-------------------------------------RealtimeUpdate------------------------------------
@@ -41,23 +27,21 @@ var waterok = 0;
 var orange = "#f79767";
 var blue = "#92bff8";
 var green = "#a0c88e";
-var alertsound = document.getElementById('alert-sound');
-var loginok = document.getElementById('login-ok');
 
 async function updateSoil(val){
     var prog = document.getElementById("progresssoil");
-    prog.parentNode.style.width = `${val}%`;
     if(val > ReqHumid + 20){
         prog.parentNode.style.backgroundColor = blue;
     }
-    if(val >= ReqHumid){
+    else if(val >= ReqHumid){
         prog.parentNode.style.backgroundColor = green;
     }else {
         prog.parentNode.style.backgroundColor = orange;
         water();
     }
-    prog.innerText = `${val}%`;
-    document.getElementById("soilvalue").innerText = val;
+    prog.innerText = `${val/1.0}%`;
+    prog.parentNode.style.width = `${val/1.0}%`;
+    document.getElementById("soilvalue").innerText = val/1.0;
 }
 
 async function updateAir(val){
@@ -70,7 +54,7 @@ async function updateAir(val){
     if(val > 70){
         prog.parentNode.style.backgroundColor = blue;
     }
-    if(val >= 50){
+    else if(val >= 50){
         prog.parentNode.style.backgroundColor = green;
     }else {
         prog.parentNode.style.backgroundColor = orange;
@@ -90,7 +74,7 @@ async function updateTemp(val){
         prog.parentNode.style.backgroundColor = orange;
     }else if(val >= 20){
         prog.parentNode.style.backgroundColor = green;
-    }{
+    }else {
         prog.parentNode.style.backgroundColor = blue; 
     }
     prog.innerText = `${val} ํC`;
@@ -100,10 +84,16 @@ async function updateTemp(val){
 //-------------------------------------SendData------------------------------------
 
 async function setReqHumid(){
-    document.getElementById('login-ok').play();
+    document.getElementById('click').play();
     var x = document.getElementById("inputhumid").value;
-    if (x < 0)x = 0;
-    else if (x > 100) x = 100;
+    if (x < 0){
+        x = 0;
+        document.getElementById("inputhumid").value = x;
+    }
+    else if (x > 100){
+        x = 100;
+        document.getElementById("inputhumid").value = x;
+    }
     else x = parseInt(x);
     ReqHumid = x;
     update(ref(db),{ReqHumid : x});
@@ -119,36 +109,51 @@ async function water(){
     waterok = 1;
     update(ref(db),{ReqWater : 1});
     setTimeout(function(){
+        waterok = 0;
         update(ref(db),{ReqWater : 0});
-        setTimeout(function(){
-            waterok = 0;
-        }, 5000); 
+        // setTimeout(function(){
+        //     waterok = 0;
+        //     var dataref = await ref(db);
+        //     var data;
+        //     get(dataref).then((snapshot) => {
+        //         data = snapshot.val();
+        //         if (snapshot.exists()) {
+        //             if(data.ReqHumid > data.soilhumid){
+        //                 water();
+        //             }
+        //         } else {
+        //           console.log("No data available");
+        //         }
+        //     }).catch((error) => {
+        //         console.error(error);
+        //     });
+        // }, 5000); 
     }, 5000); 
 }
 
-async function updateval(){
-    var dataref = await ref(db);
-    var data;
-    get(dataref).then((snapshot) => {
-        if (snapshot.exists()) {
-            data = snapshot.val();
-            console.log(data);
-            updateSoil(data.soilhumid);
-            updateAir(data.airhumid);
-            updateTemp(data.temp);
-            if(data.ReqHumid > data.soilhumid){
-                water();
-            }
-        } else {
-          console.log("No data available");
-        }
-    }).catch((error) => {
-        console.error(error);
-    });
-    setTimeout(function(){
-        updateval();
-    }, 1000); 
-}
+// async function updateval(){
+//     var dataref = await ref(db);
+//     var data;
+//     get(dataref).then((snapshot) => {
+//         if (snapshot.exists()) {
+//             data = snapshot.val();
+//             console.log(data);
+//             updateSoil(data.soilhumid);
+//             updateAir(data.airhumid);
+//             updateTemp(data.temp);
+//             if(data.ReqHumid > data.soilhumid){
+//                 water();
+//             }
+//         } else {
+//           console.log("No data available");
+//         }
+//     }).catch((error) => {
+//         console.error(error);
+//     });
+//     setTimeout(function(){
+//         updateval();
+//     }, 10000); 
+// }
 
 //-------------------------------------StartWebsite------------------------------------
 
@@ -157,9 +162,7 @@ async function startWebsite(){
     var data;
     get(dataref).then((snapshot) => {
         if (snapshot.exists()) {
-        //   console.log(snapshot.val());
             data = snapshot.val();
-            // console.log(data);
             ReqHumid = data.ReqHumid;
             document.getElementById("inputhumid").value = ReqHumid;
         } else {

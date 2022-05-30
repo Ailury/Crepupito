@@ -83,12 +83,12 @@
 
         <h1>&nbsp;&nbsp;&nbsp;&nbsp;Now I have </h1>
         <h1 class="infotext"><span>Soil humidity :&nbsp;</span><span id="soilvalue">100</span><span>%</span></h1>
-        <div class="progressbg"><div class="progress"><p class="progresstext" id="progresssoil"></p></div></div>
+        <div class="progressbg"><div class="progress"><p class="progresstext" id="progresssoil">100 %</p></div></div>
         <h1 class="infotext"><span>Air humidity :&nbsp;</span><span id="airvalue">100</span><span>%</span></h1>
-        <div class="progressbg"><div class="progress"><p class="progresstext" id="progressair"></p></div></div>
+        <div class="progressbg"><div class="progress"><p class="progresstext" id="progressair">100 %</p></div></div>
         <h1 class="infotext"><span>Temperature :&nbsp;</span><span id="tempvalue">50</span><span>&nbsp; ํC</span></h1>
         <!-- <h1 class="infotext"><span id="tempvalue">50</span><span>&nbsp; ํC</span></h1> -->
-        <div class="progressbg"><div class="progress"><p class="progresstext" id="progresstemp"></p></div></div>
+        <div class="progressbg"><div class="progress"><p class="progresstext" id="progresstemp">50 ํC</p></div></div>
         
         <div class="infotext">
           <button class="wateringbtn" onclick="watering()"></button>
@@ -123,11 +123,7 @@
     
 
     <!--audio-->
-    <audio id="alert-sound">
-      <source src="resource/error-click.wav" type="audio/mpeg"/>
-      Your browser does not support the audio element.
-    </audio>
-    <audio id="login-ok">
+    <audio id="click">
       <source src="resource/click.wav" type="audio/mpeg"/>
       Your browser does not support the audio element
     </audio>
