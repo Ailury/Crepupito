@@ -39,16 +39,19 @@ const db = getDatabase(app);
 var ReqHumid = 40;
 var waterok = 0;
 var orange = "#f79767";
-var blue = "#90cec5";
-var red;
+var blue = "#92bff8";
+var green = "#a0c88e";
 var alertsound = document.getElementById('alert-sound');
 var loginok = document.getElementById('login-ok');
 
 async function updateSoil(val){
     var prog = document.getElementById("progresssoil");
     prog.parentNode.style.width = `${val}%`;
-    if(val >= ReqHumid){
+    if(val > ReqHumid + 20){
         prog.parentNode.style.backgroundColor = blue;
+    }
+    if(val >= ReqHumid){
+        prog.parentNode.style.backgroundColor = green;
     }else {
         prog.parentNode.style.backgroundColor = orange;
         water();
@@ -64,8 +67,11 @@ async function updateAir(val){
     }else {
         prog.parentNode.style.width = `100%`;
     }
-    if(val > 50){
+    if(val > 70){
         prog.parentNode.style.backgroundColor = blue;
+    }
+    if(val >= 50){
+        prog.parentNode.style.backgroundColor = green;
     }else {
         prog.parentNode.style.backgroundColor = orange;
     }
@@ -80,9 +86,11 @@ async function updateTemp(val){
     }else {
         prog.parentNode.style.width = `100%`;
     }
-    if(val > 25){
+    if(val > 33){
         prog.parentNode.style.backgroundColor = orange;
-    }else {
+    }else if(val >= 20){
+        prog.parentNode.style.backgroundColor = green;
+    }{
         prog.parentNode.style.backgroundColor = blue; 
     }
     prog.innerText = `${val} ํC`;
@@ -99,21 +107,6 @@ async function setReqHumid(){
     else x = parseInt(x);
     ReqHumid = x;
     update(ref(db),{ReqHumid : x});
-    // var dataref = await ref(db);
-    // var data;
-    // get(dataref).then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //     //   console.log(snapshot.val());
-    //         data = snapshot.val();
-    //         if(data.ReqHumid > data.soilhumid){
-    //             water();
-    //         }
-    //     } else {
-    //       console.log("No data available");
-    //     }
-    // }).catch((error) => {
-    //     console.error
-    // });
     alert(`Minumun Humidity satisfication is now ${x}%`);
 }
 
@@ -125,44 +118,11 @@ async function water(){
     if(waterok)return;
     waterok = 1;
     update(ref(db),{ReqWater : 1});
-    // setTimeout(function(){
-    //     update(ref(db),{ReqWater : 1});
-    //     setTimeout(function(){
-    //         update(ref(db),{ReqWater : 1});
-    //         setTimeout(function(){
-    //             update(ref(db),{ReqWater : 1});
-    //             setTimeout(function(){
-    //                 update(ref(db),{ReqWater : 1});
-    //                 setTimeout(function(){
-    //                     update(ref(db),{ReqWater : 1});
-    //                     setTimeout(function(){
-    //                         update(ref(db),{ReqWater : 1});
-    //                         setTimeout(function(){
-    //                             update(ref(db),{ReqWater : 1});
-    //                             setTimeout(function(){
-    //                                 update(ref(db),{ReqWater : 1});
-    //                                 setTimeout(function(){
-    //                                     update(ref(db),{ReqWater : 0});
-    //                                     waterok = 0;
-    //                                     // setTimeout(function(){
-    //                                     //     update(ref(db),{ReqWater : 1});
-    //                                     // }, 1000); 
-    //                                 }, 1000); 
-    //                             }, 1000); 
-    //                         }, 1000); 
-    //                     }, 1000); 
-    //                 }, 1000); 
-    //             }, 1000); 
-    //         }, 1000); 
-    //     }, 1000); 
-    // }, 1000); 
-    
     setTimeout(function(){
         update(ref(db),{ReqWater : 0});
-        waterok = 0;
-        // setTimeout(function(){
-        //     update(ref(db),{ReqWater : 1});
-        // }, 1000); 
+        setTimeout(function(){
+            waterok = 0;
+        }, 5000); 
     }, 5000); 
 }
 
@@ -171,7 +131,6 @@ async function updateval(){
     var data;
     get(dataref).then((snapshot) => {
         if (snapshot.exists()) {
-        //   console.log(snapshot.val());
             data = snapshot.val();
             console.log(data);
             updateSoil(data.soilhumid);
@@ -209,53 +168,20 @@ async function startWebsite(){
       }).catch((error) => {
         console.error(error);
       });
-    updateval();
-    // await onValue(dataref, (snapshot) => {
-    //     data = (snapshot.val());
-    //     console.log(data);
-    //     updateSoil(data.soilhumid);
-    //     updateAir(data.airhumid);
-    //     updateTemp(data.temp);
-    // });
-
-    // while(true){
-    // get(dataref).then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //     //   console.log(snapshot.val());
-    //         data = snapshot.val();
-    //         console.log(data);
-    //         updateSoil(data.soilhumid);
-    //         updateAir(data.airhumid);
-    //         updateTemp(data.temp);
-    //     } else {
-    //       console.log("No data available");
-    //     }
-    //     }).catch((error) => {
-    //         console.error(error);
-    //     });
-    //     // await timer(1000);
-    //     Thread.sleep(1000);
-    // }
+    // updateval();
+    await onValue(dataref, (snapshot) => {
+        data = snapshot.val();
+        console.log(data);
+        updateSoil(data.soilhumid);
+        updateAir(data.airhumid);
+        updateTemp(data.temp);
+        if(data.ReqHumid > data.soilhumid){
+            water();
+        }
+    });
 }
-
 
 window.setReqHumid = setReqHumid;
 window.watering = watering;
 
 startWebsite();
-
-/*Dropdown Menu*/
-// $('.dropdown').click(function () {
-//     $(this).attr('tabindex', 1).focus();
-//     $(this).toggleClass('active');
-//     $(this).find('.dropdown-menu').slideToggle(300);
-// });
-// $('.dropdown').focusout(function () {
-//     $(this).removeClass('active');
-//     $(this).find('.dropdown-menu').slideUp(300);
-// });
-// $('.dropdown .dropdown-menu li').click(function () {
-//     $(this).parents('.dropdown').find('span').text($(this).text());
-//     $(this).parents('.dropdown').find('input').attr('value', $(this).attr('id'));
-// });
-/*End Dropdown Menu*/
