@@ -131,29 +131,29 @@ async function water(){
     }, 5000); 
 }
 
-// async function updateval(){
-//     var dataref = await ref(db);
-//     var data;
-//     get(dataref).then((snapshot) => {
-//         if (snapshot.exists()) {
-//             data = snapshot.val();
-//             console.log(data);
-//             updateSoil(data.soilhumid);
-//             updateAir(data.airhumid);
-//             updateTemp(data.temp);
-//             if(data.ReqHumid > data.soilhumid){
-//                 water();
-//             }
-//         } else {
-//           console.log("No data available");
-//         }
-//     }).catch((error) => {
-//         console.error(error);
-//     });
-//     setTimeout(function(){
-//         updateval();
-//     }, 10000); 
-// }
+async function updateval(){
+    var dataref = await ref(db);
+    var data;
+    get(dataref).then((snapshot) => {
+        if (snapshot.exists()) {
+            data = snapshot.val();
+            console.log(data);
+            updateSoil(data.soilhumid);
+            updateAir(data.airhumid);
+            updateTemp(data.temp);
+            if(data.ReqHumid > data.soilhumid){
+                water();
+            }
+        } else {
+          console.log("No data available");
+        }
+    }).catch((error) => {
+        console.error(error);
+    });
+    setTimeout(function(){
+        updateval();
+    }, 1000); 
+}
 
 //-------------------------------------StartWebsite------------------------------------
 
