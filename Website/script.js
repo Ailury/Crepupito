@@ -37,7 +37,6 @@ async function updateSoil(val){
         prog.parentNode.style.backgroundColor = green;
     }else {
         prog.parentNode.style.backgroundColor = orange;
-        water();
     }
     prog.innerText = `${val/1.0}%`;
     prog.parentNode.style.width = `${val/1.0}%`;
