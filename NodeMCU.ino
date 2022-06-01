@@ -7,10 +7,10 @@
 #define FIREBASE_HOST "plantwatering-6d1f6-default-rtdb.firebaseio.com"
 #define FIREBASE_AUTH "e64eB8GlFTE5T9z2SQZswQ0jW9FYJ7nKKW2mnCe9"
 
-float airhumid;
-float temp;
-float soilhumid;
-float reqwater;
+float airhumid = 0.0;
+float temp = 0.0;
+float soilhumid = 0.0;
+float reqwater = 0.0;
 
 void transmitData(int address) {
   char tmp[3];
@@ -18,7 +18,7 @@ void transmitData(int address) {
   sprintf(tmp,"%03.1f",reqwater);
   Wire.write(tmp);
   Wire.endTransmission(address);
-  Serial.println("Transmit completed");
+  //Serial.println("Transmit completed");
 }
 
 void readData(int address) {
@@ -63,7 +63,7 @@ void loop() {
   if (WiFi.status() == WL_CONNECTED){
     readData(8);
     // set data
-    Serial.println("read data completed");
+    //Serial.println("read data completed");
     Firebase.setFloat("airhumid",airhumid);
     if (Firebase.failed()) {
       Serial.print("setting /airhumid failed:");
